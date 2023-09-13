@@ -1,8 +1,13 @@
 package request
 
 import (
+	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 	"web3Server/config"
 	"web3Server/pkg/crypto"
 	"web3Server/pkg/jwt"
@@ -19,7 +24,39 @@ func Start() {
 	req := gin.Default()
 	request(req)
 	ipport := config.Config.GetString("gin.ip") + ":" + config.Config.GetString("gin.port")
-	req.Run(ipport)
+	// req.Run(ipport)
+
+	server := &http.Server{
+		Addr:           ipport,
+		Handler:        req,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	go server.ListenAndServe()
+	gracefulExitServer(server)
+}
+
+func stop() {
+
+}
+
+func gracefulExitServer(server *http.Server) {
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT)
+
+	sig := <-ch
+	fmt.Println("获取到系统信号", sig)
+	nowTime := time.Now()
+	stop()
+	// 设置超时 10s
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	err := server.Shutdown(ctx)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	fmt.Println("-----exited-----", time.Since(nowTime))
 }
 
 func retMsg(ret gin.H, format string, a ...any) gin.H {
