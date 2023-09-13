@@ -25,10 +25,9 @@
   7. config.json (配置文件)
   8. main.go  
   ### config.json (配置文件)  
-   '
         {
-            //服务器类型  
-            "server_type": "dev",//标识  
+            //服务器类型
+            "server_type": "dev",//标识
 
             // gin配置
             "gin": {
@@ -69,5 +68,5 @@
                 "api_key": "sendgrid api key"//your's sendgrid api key
             }
         }
-   '
+   
 
