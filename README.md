@@ -24,11 +24,11 @@
   6. src (源文件)  
   7. config.json (配置文件)
   8. main.go  
-  ### config.json (配置文件)
+  ### config.json (配置文件)  
    '
         {
-            //服务器类型
-            "server_type": "dev",//标识
+            //服务器类型  
+            "server_type": "dev",//标识  
 
             // gin配置
             "gin": {
