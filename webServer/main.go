@@ -6,7 +6,7 @@ import (
 	"webServer/src/db"
 	"webServer/src/gogrpc"
 	"webServer/src/log"
-	"webServer/src/sendgrid"
+	"webServer/src/mailer"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	fmt.Println("log start successed...")
 	db.Start()
 	fmt.Println("db start successed...")
-	sendgrid.Start()
+	mailer.Start()
 	fmt.Println("sendgrid start successed...")
 	gogrpc.Start()
 	request.Start()

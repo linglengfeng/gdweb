@@ -6,12 +6,19 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Config *viper.Viper
+const (
+	Mailer = "mailer"
+)
 
-// var ConfigMap map[string]interface{}
+var (
+	Config *viper.Viper
+	Cfg    = map[string]*viper.Viper{}
+)
+
 func init() {
 	configJson()
-	fmt.Println("config init configJson successed")
+	cfgJson()
+	fmt.Println("config all init successed...")
 }
 
 func configJson() {
@@ -20,6 +27,17 @@ func configJson() {
 	Config.SetConfigName("config.json")
 	Config.SetConfigType("json")
 	if err := Config.ReadInConfig(); err != nil {
-		fmt.Println(err)
+		fmt.Println("configJson err:", err)
+	}
+}
+
+func cfgJson() {
+	v := viper.New()
+	Cfg[Mailer] = v
+	v.AddConfigPath("./config/cfg")
+	v.SetConfigName(Mailer + ".json")
+	v.SetConfigType("json")
+	if err := v.ReadInConfig(); err != nil {
+		fmt.Println("cfgJson err:", err)
 	}
 }

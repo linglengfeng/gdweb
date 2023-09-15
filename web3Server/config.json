@@ -31,11 +31,6 @@
         "password": "123456"
     },
 
-    "sendgrid": {
-        "from": "example@gmail",
-        "api_key": "sendgrid api key"
-    },
-
     "grpc": {
         "svr":{
             "port":"8000"

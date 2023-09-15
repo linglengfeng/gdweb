@@ -6,7 +6,7 @@ import (
 	"web3Server/pkg/myutil"
 	"web3Server/src/db"
 	"web3Server/src/log"
-	"web3Server/src/sendgrid"
+	"web3Server/src/mailer"
 )
 
 func UserLogincode(account string) error {
@@ -15,7 +15,7 @@ func UserLogincode(account string) error {
 	if !is && err != nil {
 		return err
 	}
-	return sendgrid.SendLoginEmail(account, code)
+	return mailer.SendLoginEmail(account, code)
 }
 
 func UserLoginauth(account, code string) (string, error) {

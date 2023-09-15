@@ -6,7 +6,7 @@ import (
 	"web3Server/pkg/myutil"
 	"web3Server/proto_go"
 	"web3Server/src/db"
-	"web3Server/src/sendgrid"
+	"web3Server/src/mailer"
 )
 
 func (s *server) Say(ctx context.Context, req *proto_go.SayRequest) (*proto_go.SayResponse, error) {
@@ -25,7 +25,7 @@ func (s *server) UserLogincode(ctx context.Context, req *proto_go.C2S_UserLoginc
 		status = 0
 		msg = err.Error()
 	}
-	err = sendgrid.SendLoginEmail(account, code)
+	err = mailer.SendLoginEmail(account, code)
 	if err != nil {
 		status = 0
 		msg = err.Error()
