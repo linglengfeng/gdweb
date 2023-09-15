@@ -1,0 +1,49 @@
+syntax = "proto3";
+// protoc --go_out=./ *.proto
+// protoc --go_out=. --go-grpc_out=./ *.proto
+option go_package = "../proto_go/;proto_go";
+
+// -------------------------------------
+service Hello {
+  rpc Say (SayRequest) returns (SayResponse);
+}
+
+message SayResponse {
+  string Message = 1;
+}
+message SayRequest {
+  string Name = 1;
+}
+
+// -------------------------------------
+service Gogrpc {
+  rpc UserLogincode (C2S_UserLogincode) returns (S2C_UserLogincode);
+  rpc UserLoginauth (C2S_UserLoginauth) returns (S2C_UserLoginauth);
+  rpc CommMsg (C2S_Map) returns (S2C_Map);
+}
+
+message C2S_UserLogincode {
+  string Account = 1;
+}
+message S2C_UserLogincode {
+  int32 status = 1;
+  string Message = 2;
+}
+
+message C2S_UserLoginauth {
+  string Account = 1;
+  string Code = 2;
+}
+message S2C_UserLoginauth {
+  int32 status = 1;
+  string Message = 2;
+}
+
+message C2S_Map {
+  map<string, string> map = 1;
+}
+message S2C_Map {
+  map<string, string> map = 1;
+}
+
+
