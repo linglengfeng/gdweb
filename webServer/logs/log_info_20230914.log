@@ -1,7 +1,0 @@
-time=2023-09-14T16:00:51.617+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:69 func=-
-time=2023-09-14T16:01:11.616+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:69 func=-
-time=2023-09-14T16:02:04.943+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:69 func=-
-time=2023-09-14T16:02:49.419+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:69 func=-
-time=2023-09-14T16:04:00.680+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:70 func=-
-time=2023-09-14T16:05:03.229+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:70 func=-
-time=2023-09-14T16:05:56.484+08:00 level=INFO msg="request can't used, err:token contains an invalid number of segments" file=req_define.go:70 func=-

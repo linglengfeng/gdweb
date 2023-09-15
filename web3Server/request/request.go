@@ -34,6 +34,7 @@ func Start() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	go server.ListenAndServe()
+	fmt.Println("gin start successed..., ip port:", ipport)
 	gracefulExitServer(server)
 }
 

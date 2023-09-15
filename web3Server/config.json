@@ -1,5 +1,6 @@
 {
     "server_type": "dev",
+    "server_name": "web3Server",
 
     "gin": {
         "ip": "127.0.0.1",
@@ -33,5 +34,15 @@
     "sendgrid": {
         "from": "example@gmail",
         "api_key": "sendgrid api key"
+    },
+
+    "grpc": {
+        "svr":{
+            "port":"8000"
+        },
+        "cli":{
+            "grpc_ip":"127.0.0.1",
+            "grpc_port":"8001"
+        }
     }
 }
