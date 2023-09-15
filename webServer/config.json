@@ -1,0 +1,48 @@
+{
+    "server_type": "dev",
+    "server_name": "webServer",
+
+    "gin": {
+        "ip": "127.0.0.1",
+        "port": "9103",
+        "mod": "debug"
+    },
+
+    "log": {
+        "level": "debug",
+        "path": "./logs",
+        "remain_day": "90",
+        "showfile": "1",
+        "showfunc": "0"
+    },
+
+    "mysql": {
+        "ip": "127.0.0.1",
+        "port": "3306",
+        "user": "root",
+        "password": "123456",
+        "db": "gdweb"
+    },
+
+    "redis": {
+        "ip": "127.0.0.1",
+        "port": "6379",
+        "db": "1",
+        "password": "123456"
+    },
+
+    "sendgrid": {
+        "from": "example@gmail",
+        "api_key": "sendgrid api key"
+    },
+
+    "grpc": {
+        "svr":{
+            "port":"8001"
+        },
+        "cli":{
+            "grpc_ip":"127.0.0.1",
+            "grpc_port":"8000"
+        }
+    }
+}
