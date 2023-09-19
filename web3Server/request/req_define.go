@@ -64,11 +64,22 @@ var (
 
 func request(req *gin.Engine) {
 	req.Use(func(c *gin.Context) {
+		// 检查请求是否是 OPTIONS 请求
+		if c.Request.Method == "OPTIONS" {
+			// 添加允许的 CORS 标头
+			c.Header("Access-Control-Allow-Origin", "*")
+			c.Header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+			c.Header("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type")
+			c.Status(200)
+			c.Abort()
+			return
+		}
 		is, err := shouldDisableRoute(c)
 		if !is {
 			log.Info("request can't used, err:%v", err)
 			c.JSON(http.StatusOK, retMsg(MSGF102, err))
 			c.AbortWithStatus(http.StatusForbidden)
+			return
 		}
 		c.Next()
 	})
