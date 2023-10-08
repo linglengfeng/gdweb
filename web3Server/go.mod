@@ -4,6 +4,8 @@ go 1.21.0
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-contrib/pprof v1.4.0
+	github.com/gin-contrib/timeout v0.0.3
 	github.com/gin-gonic/gin v1.9.1
 	github.com/redis/go-redis/v9 v9.1.0
 	github.com/robfig/cron/v3 v3.0.1

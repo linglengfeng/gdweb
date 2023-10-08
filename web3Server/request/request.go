@@ -12,6 +12,8 @@ import (
 	"web3Server/pkg/crypto"
 	"web3Server/pkg/jwt"
 
+	"github.com/gin-contrib/pprof"
+	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +24,12 @@ func Start() {
 	}
 	gin.SetMode(ginmod)
 	req := gin.Default()
+	if ginmod == gin.DebugMode || ginmod == gin.TestMode {
+		pprof.Register(req, DevPprof) // http://localhost:9102/dev/pprof/
+		// go tool pprof http://localhost:9102/dev/pprof/profile
+	}
+	timeoutMs := config.Config.GetInt("gin.timeoutMs")
+	req.Use(timeoutMiddleware(timeoutMs))
 	request(req)
 	ipport := config.Config.GetString("gin.ip") + ":" + config.Config.GetString("gin.port")
 	// req.Run(ipport)
@@ -40,6 +48,20 @@ func Start() {
 
 func stop() {
 
+}
+
+func timeoutMiddleware(timeoutMs int) gin.HandlerFunc {
+	return timeout.New(
+		timeout.WithTimeout(time.Duration(timeoutMs)*time.Millisecond),
+		timeout.WithHandler(func(c *gin.Context) {
+			c.Next()
+		}),
+		timeout.WithResponse(timeoutResponse),
+	)
+}
+
+func timeoutResponse(c *gin.Context) {
+	c.JSON(http.StatusGatewayTimeout, MSGF103)
 }
 
 func gracefulExitServer(server *http.Server) {
@@ -104,6 +126,7 @@ func handle_test(c *gin.Context) {
 		c.JSON(http.StatusOK, retData(MSGF101, err))
 		return
 	}
+	time.Sleep(3 * time.Second)
 	fmt.Println("params:", params)
 	c.JSON(http.StatusOK, retData(MSG100, params))
 }

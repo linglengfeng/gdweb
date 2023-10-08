@@ -25,8 +25,11 @@ const (
 	S101_MSG = "failed"
 	F102     = -102
 	F102_MSG = "parameter error"
+	F103     = -103
+	F103_MSG = "timeout"
 
 	// GET
+	DevPprof = "/dev/pprof"
 
 	// POST
 	Test      = "/test"
@@ -59,6 +62,11 @@ var (
 	MSGF102 = gin.H{
 		"state":   F102,
 		"message": F102_MSG,
+	}
+
+	MSGF103 = gin.H{
+		"state":   F103,
+		"message": F103_MSG,
 	}
 )
 
