@@ -40,5 +40,10 @@
             "grpc_ip":"127.0.0.1",
             "grpc_port":"8001"
         }
-    }
+    },
+
+    "isAllowedIPs": 0,
+    "allowedIPs": [
+        "127.0.0.1"
+    ]
 }

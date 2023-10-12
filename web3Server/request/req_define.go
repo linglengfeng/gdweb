@@ -1,6 +1,7 @@
 package request
 
 import (
+	"gdback/pkg/myutil"
 	"net/http"
 	"web3Server/config"
 	"web3Server/pkg/jwt"
@@ -71,34 +72,7 @@ var (
 )
 
 func request(req *gin.Engine) {
-	req.Use(func(c *gin.Context) {
-		// 检查请求是否是 OPTIONS 请求
-		if c.Request.Method == "OPTIONS" || c.Request.Method == "POST" || c.Request.Method == "GET" {
-			// 允许特定域的跨域请求
-			c.Header("Access-Control-Allow-Origin", "*")
-			// 允许特定的 HTTP 方法
-			c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-			// 允许特定的请求头
-			c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-			// 允许跨域请求包含凭据（如 Cookie）
-			c.Header("Access-Control-Allow-Credentials", "true")
-			// 设置预检请求有效期
-			c.Header("Access-Control-Max-Age", "600")
-			if c.Request.Method == "OPTIONS" {
-				c.Status(200)
-				c.Abort()
-				return
-			}
-		}
-		is, err := shouldDisableRoute(c)
-		if !is {
-			log.Info("request can't used, err:%v", err)
-			c.JSON(http.StatusOK, retMsg(MSGF102, err))
-			c.AbortWithStatus(http.StatusForbidden)
-			return
-		}
-		c.Next()
-	})
+	req.Use(headerMiddleware, allowedIPsMiddleware)
 
 	//get
 
@@ -112,6 +86,51 @@ func request(req *gin.Engine) {
 	req.POST(UserLoginCode, handle_user_login_code)
 	req.POST(UserLoginAuth, handle_user_login_auth)
 	req.POST(UserLoginToken, handle_user_login_token)
+}
+
+func headerMiddleware(c *gin.Context) {
+	// 检查请求是否是 OPTIONS 请求
+	if c.Request.Method == "OPTIONS" || c.Request.Method == "POST" || c.Request.Method == "GET" {
+		// 允许特定域的跨域请求
+		c.Header("Access-Control-Allow-Origin", "*")
+		// 允许特定的 HTTP 方法
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		// 允许特定的请求头
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		// 允许跨域请求包含凭据（如 Cookie）
+		c.Header("Access-Control-Allow-Credentials", "true")
+		// 设置预检请求有效期
+		c.Header("Access-Control-Max-Age", "600")
+		if c.Request.Method == "OPTIONS" {
+			c.Status(200)
+			c.Abort()
+			return
+		}
+	}
+	is, err := shouldDisableRoute(c)
+	if !is {
+		log.Info("request can't used, err:%v", err)
+		c.JSON(http.StatusOK, retMsg(MSGF102, err))
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+	c.Next()
+}
+
+func allowedIPsMiddleware(c *gin.Context) {
+	isAllowedIPs := config.Config.GetInt("isAllowedIPs")
+	if isAllowedIPs == 1 {
+		clientIP := c.ClientIP()
+		allowedIPs := config.Config.GetStringSlice("allowedIPs")
+		ismem := myutil.IsMember[string](clientIP, allowedIPs)
+		if !ismem {
+			log.Info("Access denied, clientIP:%v", clientIP)
+			c.JSON(http.StatusOK, retMsg(MSGF102, "Access denied"))
+			c.Abort()
+			return
+		}
+	}
+	c.Next()
 }
 
 func shouldDisableRoute(c *gin.Context) (bool, string) {
