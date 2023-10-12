@@ -5,6 +5,7 @@ import (
 	"web3Server/request"
 	"web3Server/src/db"
 	"web3Server/src/gogrpc"
+	"web3Server/src/httpcli"
 	"web3Server/src/log"
 	"web3Server/src/mailer"
 )
@@ -17,5 +18,8 @@ func main() {
 	mailer.Start()
 	fmt.Println("mailer start successed...")
 	gogrpc.Start()
+	fmt.Println("gogrpc start successed...")
+	httpcli.Start()
+	fmt.Println("httpcli start successed...")
 	request.Start()
 }
