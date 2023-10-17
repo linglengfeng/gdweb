@@ -222,11 +222,7 @@ func logJob() {
 			// 删除n天前的日志
 			delfileday := LogCfgValue.Remain_day
 			removeLogFile := fmt.Sprintf(fileprefix+"%s.log", time.Now().Add(time.Duration(delfileday)*-24*time.Hour).Format("20060102"))
-			_, err := os.Open(removeLogFile)
-			if err != nil {
-				Error("logJob remove file:" + err.Error())
-				return
-			}
+			os.Remove(removeLogFile)
 		}
 
 		// go func() {
