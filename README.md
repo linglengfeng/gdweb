@@ -14,7 +14,7 @@
   2. in_test (test 目录)  
   3. logs (日志文件)  
   4. pkg (内部包)  
-    1. crypto (加解密)  
+    1. crypto (加解密) 
     2. jwt (json web token)  
     3. logger (日志 基于slog)  
     4. mysql (mysql 连接)  
